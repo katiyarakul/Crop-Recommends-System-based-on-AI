@@ -1,0 +1,663 @@
+{% extends "layout.html" %}
+
+{% block title %}Community - AVANI{% endblock %}
+
+{% block content %}
+<style>
+    /* Community page styles */
+    .community-wrapper {
+        min-height: calc(100vh - 80px);
+        padding: 60px 20px;
+        background: linear-gradient(135deg, #0f2027 0%, #203a43 25%, #2c5364 50%, #28a745 75%, #20c997 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .community-wrapper::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 120%;
+        height: 120%;
+        background: 
+            radial-gradient(circle at 10% 20%, rgba(40,167,69,0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(32,201,151,0.15) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(23,162,184,0.1) 0%, transparent 50%),
+            linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.02) 50%, transparent 100%);
+        animation: communityFlow 25s ease-in-out infinite;
+        z-index: 0;
+    }
+
+    .community-wrapper::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            radial-gradient(circle at 25px 25px, rgba(255,255,255,0.1) 2px, transparent 2px),
+            radial-gradient(circle at 75px 75px, rgba(255,255,255,0.05) 1px, transparent 1px);
+        background-size: 50px 50px, 100px 100px;
+        animation: dotPattern 30s linear infinite;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    @keyframes communityFlow {
+        0%, 100% { 
+            transform: translateX(0) translateY(0) rotate(0deg);
+            opacity: 0.8;
+        }
+        25% { 
+            transform: translateX(-30px) translateY(-30px) rotate(90deg);
+            opacity: 1;
+        }
+        50% { 
+            transform: translateX(20px) translateY(-20px) rotate(180deg);
+            opacity: 0.9;
+        }
+        75% { 
+            transform: translateX(-10px) translateY(20px) rotate(270deg);
+            opacity: 1;
+        }
+    }
+
+    @keyframes dotPattern {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(-50px, -50px); }
+    }
+
+    .community-container {
+        position: relative;
+        z-index: 2;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .community-header {
+        text-align: center;
+        margin-bottom: 70px;
+        position: relative;
+        z-index: 2;
+        opacity: 0;
+        transform: translateY(-60px) scale(0.8);
+        animation: communityHeroEntry 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .community-header h1 {
+        font-size: 4rem;
+        background: linear-gradient(45deg, #ffffff, #e8f5e8, #d4f0d9, #ffffff);
+        background-size: 300% 300%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 40px rgba(255,255,255,0.3);
+        margin-bottom: 25px;
+        font-weight: 900;
+        letter-spacing: -2px;
+        animation: textShimmer 4s ease-in-out infinite;
+    }
+
+    .community-header p {
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 1.4rem;
+        text-shadow: 0 2px 15px rgba(0,0,0,0.3);
+        max-width: 800px;
+        margin: 0 auto;
+        font-weight: 300;
+        line-height: 1.7;
+    }
+
+    .community-sections {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        gap: 50px;
+        margin-bottom: 80px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .section-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 30px;
+        padding: 40px;
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 
+            0 25px 50px rgba(0, 0, 0, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        opacity: 0;
+        transform: translateY(100px) rotateY(15deg);
+        animation: sectionCardEntry 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .section-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(40, 167, 69, 0.08),
+            rgba(32, 201, 151, 0.08),
+            rgba(23, 162, 184, 0.08),
+            transparent
+        );
+        transition: left 0.8s ease;
+        z-index: 1;
+    }
+
+    .section-card:hover::before {
+        left: 100%;
+    }
+
+    .section-card:nth-child(1) { animation-delay: 0.3s; }
+    .section-card:nth-child(2) { animation-delay: 0.6s; }
+    .section-card:nth-child(3) { animation-delay: 0.9s; }
+    .section-card:nth-child(4) { animation-delay: 1.2s; }
+
+    .section-card:hover {
+        transform: translateY(-25px) rotateY(0deg) scale(1.02);
+        box-shadow: 
+            0 35px 70px rgba(40, 167, 69, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .section-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #28a745, #20c997, #17a2b8, #6f42c1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 25px;
+        font-size: 2rem;
+        color: white;
+        box-shadow: 
+            0 15px 30px rgba(40, 167, 69, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .section-icon::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: iconSpin 4s linear infinite;
+    }
+
+    .section-card:hover .section-icon {
+        transform: scale(1.15) rotate(10deg);
+        box-shadow: 
+            0 20px 40px rgba(40, 167, 69, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .section-card h3 {
+        color: #1a365d;
+        font-size: 1.8rem;
+        margin: 0;
+        font-weight: 800;
+        position: relative;
+        z-index: 2;
+    }
+
+    .section-card p {
+        color: #4a5568;
+        margin-bottom: 30px;
+        line-height: 1.8;
+        font-weight: 400;
+        font-size: 1.05rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .discussion-item, .expert-item, .event-item, .success-item {
+        background: linear-gradient(135deg, rgba(248, 252, 250, 0.8), rgba(240, 248, 244, 0.9));
+        border-radius: 18px;
+        padding: 20px;
+        margin: 15px 0;
+        border-left: 4px solid transparent;
+        border-image: linear-gradient(45deg, #28a745, #20c997) 1;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.1);
+    }
+
+    .discussion-item::before, .expert-item::before, .event-item::before, .success-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(40, 167, 69, 0.05),
+            transparent
+        );
+        transition: left 0.5s ease;
+    }
+
+    .discussion-item:hover::before, .expert-item:hover::before, .event-item:hover::before, .success-item:hover::before {
+        left: 100%;
+    }
+
+    .discussion-item:hover, .expert-item:hover, .event-item:hover, .success-item:hover {
+        background: linear-gradient(135deg, rgba(232, 245, 234, 0.9), rgba(212, 240, 217, 1));
+        transform: translateX(8px) translateY(-3px);
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.2);
+        border-image: linear-gradient(45deg, #20c997, #17a2b8) 1;
+    }
+
+    .discussion-item h4, .expert-item h4, .event-item h4, .success-item h4 {
+        color: #28a745;
+        margin-bottom: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .discussion-meta, .expert-meta, .event-meta, .success-meta {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 8px;
+    }
+
+    .discussion-preview, .expert-desc, .event-desc, .success-desc {
+        font-size: 0.9rem;
+        color: #333;
+        line-height: 1.4;
+    }
+
+    .join-btn, .connect-btn, .register-btn, .share-btn {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .join-btn:hover, .connect-btn:hover, .register-btn:hover, .share-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+    }
+
+    .view-more-btn {
+        width: 100%;
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .view-more-btn:hover {
+        background: #218838;
+        transform: translateY(-2px);
+    }
+
+    .community-stats {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 30px;
+        padding: 60px;
+        margin-top: 80px;
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 
+            0 30px 60px rgba(0, 0, 0, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        opacity: 0;
+        animation: fadeIn 1.5s ease 2s forwards;
+        position: relative;
+        z-index: 2;
+        overflow: hidden;
+    }
+
+    .community-stats::before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        width: calc(100% + 6px);
+        height: calc(100% + 6px);
+        background: linear-gradient(45deg, #28a745, #20c997, #17a2b8, #6f42c1, #28a745);
+        border-radius: 30px;
+        z-index: -1;
+        background-size: 400% 400%;
+        animation: statsGradient 8s ease infinite;
+        opacity: 0.6;
+    }
+
+    .community-stats h2 {
+        color: #1a365d;
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 2.5rem;
+        font-weight: 800;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 40px;
+        text-align: center;
+    }
+
+    .stat-item {
+        padding: 30px;
+        border-radius: 25px;
+        background: linear-gradient(135deg, rgba(248, 252, 250, 0.8), rgba(232, 245, 234, 0.9));
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 1px solid rgba(40, 167, 69, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #28a745, #20c997);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+    }
+
+    .stat-item:hover::before {
+        transform: translateX(0);
+    }
+
+    .stat-item:hover {
+        background: linear-gradient(135deg, rgba(232, 245, 234, 1), rgba(212, 240, 217, 1));
+        transform: translateY(-10px) scale(1.02);
+        border-color: #28a745;
+        box-shadow: 0 15px 35px rgba(40, 167, 69, 0.2);
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 900;
+        background: linear-gradient(45deg, #28a745, #20c997);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+        animation: numberPulse 2s ease-in-out infinite;
+    }
+
+    .stat-label {
+        color: #4a5568;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 600;
+    }
+
+    @keyframes communityHeroEntry {
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes sectionCardEntry {
+        to {
+            opacity: 1;
+            transform: translateY(0) rotateY(0deg);
+        }
+    }
+
+    @keyframes textShimmer {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    @keyframes iconSpin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    @keyframes statsGradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @keyframes numberPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .community-header h1 {
+            font-size: 2.5rem;
+        }
+
+        .section-card {
+            padding: 20px;
+        }
+
+        .community-sections {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<div class="community-wrapper">
+    <div class="community-container">
+        <div class="community-header">
+            <h1>AVANI Community</h1>
+            <p>Connect with fellow farmers, share knowledge, and grow together through collaborative farming</p>
+        </div>
+
+        <div class="community-sections">
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-icon">💬</div>
+                    <h3>Discussions</h3>
+                </div>
+                <p>Join active discussions about farming techniques, crop management, and agricultural innovations</p>
+                
+                <div class="discussion-item">
+                    <h4>Best practices for organic farming in monsoon</h4>
+                    <div class="discussion-meta">Started by Rajesh Kumar • 2 hours ago • 15 replies</div>
+                    <div class="discussion-preview">Looking for advice on maintaining organic crops during heavy rainfall season...</div>
+                    <button class="join-btn">Join Discussion</button>
+                </div>
+                
+                <div class="discussion-item">
+                    <h4>Rice yield improvement techniques</h4>
+                    <div class="discussion-meta">Started by Priya Singh • 1 day ago • 32 replies</div>
+                    <div class="discussion-preview">Sharing successful methods for increasing rice production in small farms...</div>
+                    <button class="join-btn">Join Discussion</button>
+                </div>
+                
+                <div class="discussion-item">
+                    <h4>Pest control without harmful chemicals</h4>
+                    <div class="discussion-meta">Started by Amit Patel • 2 days ago • 28 replies</div>
+                    <div class="discussion-preview">Natural and eco-friendly ways to protect crops from common pests...</div>
+                    <button class="join-btn">Join Discussion</button>
+                </div>
+                
+                <button class="view-more-btn">View All Discussions</button>
+            </div>
+
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-icon">👨‍🌾</div>
+                    <h3>Expert Network</h3>
+                </div>
+                <p>Connect with agricultural experts, researchers, and experienced farmers for professional guidance</p>
+                
+                <div class="expert-item">
+                    <h4>Dr. Sunita Sharma - Soil Scientist</h4>
+                    <div class="expert-meta">15 years experience • Soil Health Specialist</div>
+                    <div class="expert-desc">Expert in soil testing, nutrient management, and sustainable farming practices.</div>
+                    <button class="connect-btn">Connect</button>
+                </div>
+                
+                <div class="expert-item">
+                    <h4>Ramesh Gupta - Crop Consultant</h4>
+                    <div class="expert-meta">20 years experience • Crop Management Expert</div>
+                    <div class="expert-desc">Specializes in crop rotation, pest management, and yield optimization techniques.</div>
+                    <button class="connect-btn">Connect</button>
+                </div>
+                
+                <div class="expert-item">
+                    <h4>Prof. Maria Joseph - Agricultural Researcher</h4>
+                    <div class="expert-meta">12 years experience • Organic Farming Researcher</div>
+                    <div class="expert-desc">Research focus on organic farming methods and sustainable agriculture practices.</div>
+                    <button class="connect-btn">Connect</button>
+                </div>
+                
+                <button class="view-more-btn">View All Experts</button>
+            </div>
+
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-icon">📅</div>
+                    <h3>Events & Workshops</h3>
+                </div>
+                <p>Participate in farming workshops, training sessions, and community events</p>
+                
+                <div class="event-item">
+                    <h4>Modern Irrigation Techniques Workshop</h4>
+                    <div class="event-meta">March 15, 2025 • Online • 2:00 PM - 4:00 PM</div>
+                    <div class="event-desc">Learn about drip irrigation, sprinkler systems, and water conservation methods.</div>
+                    <button class="register-btn">Register</button>
+                </div>
+                
+                <div class="event-item">
+                    <h4>Organic Fertilizer Making Training</h4>
+                    <div class="event-meta">March 20, 2025 • Community Center • 10:00 AM - 3:00 PM</div>
+                    <div class="event-desc">Hands-on training for preparing compost and organic fertilizers at home.</div>
+                    <button class="register-btn">Register</button>
+                </div>
+                
+                <div class="event-item">
+                    <h4>Seasonal Crop Planning Seminar</h4>
+                    <div class="event-meta">March 25, 2025 • Online • 6:00 PM - 7:30 PM</div>
+                    <div class="event-desc">Expert guidance on selecting crops based on season and market demand.</div>
+                    <button class="register-btn">Register</button>
+                </div>
+                
+                <button class="view-more-btn">View All Events</button>
+            </div>
+
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-icon">🏆</div>
+                    <h3>Success Stories</h3>
+                </div>
+                <p>Read inspiring stories from farmers who achieved remarkable success using modern techniques</p>
+                
+                <div class="success-item">
+                    <h4>From 2 acres to 20 acres: Journey of Suresh Babu</h4>
+                    <div class="success-meta">Featured Story • Karnataka Farmer</div>
+                    <div class="success-desc">How precision farming and AI recommendations helped increase farm size and profits by 400%...</div>
+                    <button class="share-btn">Read More</button>
+                </div>
+                
+                <div class="success-item">
+                    <h4>Organic Farming Success in Rajasthan Desert</h4>
+                    <div class="success-meta">Featured Story • Rajasthan Farmer</div>
+                    <div class="success-desc">Innovative water management and organic methods in arid regions...</div>
+                    <button class="share-btn">Read More</button>
+                </div>
+                
+                <div class="success-item">
+                    <h4>Women's Collective Farming Initiative</h4>
+                    <div class="success-meta">Featured Story • Tamil Nadu Collective</div>
+                    <div class="success-desc">How 50 women farmers formed a cooperative and increased their income by 300%...</div>
+                    <button class="share-btn">Read More</button>
+                </div>
+                
+                <button class="view-more-btn">View All Stories</button>
+            </div>
+        </div>
+
+        <div class="community-stats">
+            <h2>Community Impact</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">15,000+</div>
+                    <div class="stat-label">Active Farmers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Expert Advisors</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">2,500+</div>
+                    <div class="stat-label">Success Stories</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1,200+</div>
+                    <div class="stat-label">Active Discussions</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Set active nav item for community page
+    document.addEventListener('DOMContentLoaded', function() {
+        const navCommunity = document.getElementById('nav-community');
+        if (navCommunity) {
+            navCommunity.classList.add('active');
+        }
+    });
+</script>
+
+{% endblock %}

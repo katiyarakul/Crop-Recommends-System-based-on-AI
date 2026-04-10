@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SMARTKISAAN - AI Crop Recommendation{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" class="logo">
+            <span class="brand">SMARTKISAAN</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/solution">Features</a></li>
+            <li><a href="/recommendation">Get Recommendation</a></li>
+            <li><a href="/shop">Shop</a></li>
+            <li><a href="/community">Community</a></li>
+            <li><a href="/chat">Chat</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="/contact" class="btn-contact">Contact</a>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

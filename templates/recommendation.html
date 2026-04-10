@@ -1,0 +1,208 @@
+{% extends "layout.html" %}
+
+{% block title %}Personalized Recommendation - SMARTKISAAN{% endblock %}
+
+{% block content %}
+<style>
+    .recommendation-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: calc(100vh - 80px); 
+        padding: 40px 20px;
+        background: url("{{ url_for('static', filename='css/rec.jpg') }}") no-repeat center center/cover;
+        background-size: cover;
+        position: relative;
+        animation: zoomBackground 30s ease-in-out infinite alternate;
+    }
+
+    @keyframes zoomBackground {
+        from { background-size: 100%; }
+        to { background-size: 110%; }
+    }
+
+    .recommendation-wrapper::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 0;
+    }
+
+    .solution-container {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 30px 40px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: 100%;
+        max-width: 600px;
+        position: relative;
+        z-index: 1;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeUp 1.5s ease-out forwards;
+    }
+
+    @keyframes fadeUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .solution-container h1 {
+        text-align: center;
+        color: #28a745;
+        margin-bottom: 30px;
+        animation: fadeIn 2s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-sizing: border-box;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        transform: scale(1.02);
+        box-shadow: 0 0 8px rgba(40, 167, 69, 0.6);
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        background-color: #28a745;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+        background-color: #218838;
+        transform: scale(1.05);
+    }
+
+    .success-message {
+        background: #d4edda;
+        color: #155724;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .error-message {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .analysis-link {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .analysis-link a {
+        display: inline-block;
+        padding: 12px 25px;
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .analysis-link a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    }
+
+    @media(max-width: 650px) {
+        .solution-container {
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="recommendation-wrapper">
+    <div class="solution-container">
+        <h1>Personalized Recommendation</h1>
+        
+        {% if success %}
+        <div class="success-message">
+            {{ success }}
+        </div>
+        {% endif %}
+        
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
+        
+        <form method="POST" action="/submit-recommendation">
+            <div class="form-group">
+                <label for="location">Your Location</label>
+                <input type="text" id="location" name="location" placeholder="Enter your location" required>
+            </div>
+
+            <div class="form-group">
+                <label for="lastCrop">Last Crop</label>
+                <input type="text" id="lastCrop" name="lastCrop" placeholder="Enter your last crop" required>
+            </div>
+
+            <div class="form-group">
+                <label for="irrigation">Irrigation Availability</label>
+                <select id="irrigation" name="irrigation" required>
+                    <option value="" disabled selected>Select irrigation status</option>
+                    <option value="drip">Drip Irrigation</option>
+                    <option value="sprinkler">Sprinkler System</option>
+                    <option value="flood">Flood Irrigation</option>
+                    <option value="rainfed">Rain-fed Only</option>
+                    <option value="none">No Irrigation</option>
+                </select>
+            </div>
+
+            <button type="submit">Get Basic Recommendation</button>
+        </form>
+        
+        <div class="analysis-link">
+            <p style="margin: 15px 0 10px; color: #666;">For detailed AI-powered crop analysis:</p>
+            <a href="/crop-analysis">Advanced Crop Analysis</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

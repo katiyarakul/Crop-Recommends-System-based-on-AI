@@ -1,0 +1,156 @@
+{% extends "layout.html" %}
+
+{% block title %}Login - SMARTKISAAN{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: url("{{ url_for('static', filename='css/login.jpg') }}") no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        animation: fadeIn 2s ease-in;
+    }
+
+    .login-container {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 30px 40px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        width: 350px;
+        margin: 100px auto; 
+        animation: slideDown 1.5s ease-out;
+    }
+
+    .login-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+        animation: fadeIn 2.5s ease-in;
+    }
+
+    .login-container label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="email"],
+    .login-container input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .login-container input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0,123,255,0.6);
+    }
+
+    .login-container .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .login-container input[type="checkbox"] {
+        margin-right: 8px;
+    }
+
+    .login-container button {
+        width: 100%;
+        padding: 10px;
+        background: #007bff;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .login-container button:hover {
+        background: #0056b3;
+        transform: scale(1.05);
+    }
+
+    .error {
+        color: red;
+        font-size: 14px;
+        margin-bottom: 10px;
+        opacity: 0;
+        animation: fadeIn 1.2s forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideDown {
+        from { transform: translateY(-50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+</style>
+
+<div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="username">Username (Gmail)</label>
+        <input type="email" id="username" placeholder="Enter your Gmail" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter password" required>
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+
+        <div class="checkbox-container">
+            <input type="checkbox" id="agree">
+            <label for="agree">Do you agree to share your location</label>
+        </div>
+
+        <div class="error" id="errorMsg"></div>
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const agree = document.getElementById('agree').checked;
+
+        if(password !== confirmPassword) {
+            errorMsg.textContent = "Passwords do not match!";
+            errorMsg.style.opacity = "1";
+            return;
+        }
+
+        if(!agree) {
+            errorMsg.textContent = "You must agree to share your location!";
+            errorMsg.style.opacity = "1";
+            return;
+        }
+
+        errorMsg.textContent = "";
+        errorMsg.style.opacity = "0";
+
+        window.location.href = "{{ url_for('solution') }}";
+    });
+</script>
+{% endblock %}

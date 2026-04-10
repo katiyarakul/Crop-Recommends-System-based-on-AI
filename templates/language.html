@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: url("{{ url_for('static', filename='css/language.jpg') }}") no-repeat center center fixed;
+        background-size: cover;
+        font-family: Arial, sans-serif;
+        overflow-x: hidden;
+        animation: bgZoom 20s ease-in-out infinite alternate;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+
+    .language-page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        position: relative;
+        z-index: 1;
+    }
+
+    .language-page h2 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+        opacity: 0;
+        transform: translateY(-30px);
+        animation: fadeSlideDown 1s ease forwards;
+    }
+
+    .language-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .language-list li {
+        margin: 12px 0;
+        opacity: 0;
+        transform: translateX(-30px);
+        animation: fadeSlideRight 0.8s ease forwards;
+    }
+
+    .language-list li:nth-child(1) { animation-delay: 0.3s; }
+    .language-list li:nth-child(2) { animation-delay: 0.5s; }
+    .language-list li:nth-child(3) { animation-delay: 0.7s; }
+    .language-list li:nth-child(4) { animation-delay: 0.9s; }
+    .language-list li:nth-child(5) { animation-delay: 1.1s; }
+    .language-list li:nth-child(6) { animation-delay: 1.3s; }
+    .language-list li:nth-child(7) { animation-delay: 1.5s; }
+    .language-list li:nth-child(8) { animation-delay: 1.7s; }
+    .language-list li:nth-child(9) { animation-delay: 1.9s; }
+    .language-list li:nth-child(10) { animation-delay: 2.1s; }
+    .language-list li:nth-child(11) { animation-delay: 2.3s; }
+
+    .language-list a {
+        text-decoration: none;
+        color: white;
+        font-size: 1.4rem;
+        padding: 10px 30px;
+        border-radius: 50px;  
+        background: rgba(40, 167, 69, 0.7);
+        transition: 0.3s;
+        display: inline-block;
+    }
+
+    .language-list a:hover {
+        background: rgba(40, 167, 69, 1);
+        transform: scale(1.1);
+        box-shadow: 0 0 15px rgba(40, 167, 69, 0.9);
+    }
+
+    @keyframes fadeSlideDown {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeSlideRight {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes bgZoom {
+        0% {
+            background-size: 100% 100%;
+        }
+        100% {
+            background-size: 110% 110%;
+        }
+    }
+</style>
+
+<div class="overlay"></div>
+
+<div class="language-page">
+    <h2>Select Your Preferred Language</h2>
+    <ul class="language-list">  
+        <li><a href="{{ url_for('login') }}">English</a></li>
+        <li><a href="{{ url_for('login') }}">हिंदी (Hindi)</a></li>
+        <li><a href="{{ url_for('login') }}">ଓଡ଼ିଆ (Odia)</a></li>
+        <li><a href="{{ url_for('login') }}">বাংলা (Bengali)</a></li>
+        <li><a href="{{ url_for('login') }}">Nagpuri (नागपुरी)</a></li>
+        <li><a href="{{ url_for('login') }}">Magahi (मगही)</a></li>
+        <li><a href="{{ url_for('login') }}">Kurmali (कुरमाली)</a></li>
+        <li><a href="{{ url_for('login') }}">Panchpargania (पंचपरगनिया)</a></li>
+        <li><a href="{{ url_for('login') }}">Santali (ᱥᱟᱱᱛᱟᱲᱤ)</a></li>
+        <li><a href="{{ url_for('login') }}">Ho (हो)</a></li>
+        <li><a href="{{ url_for('login') }}">Kharia (खड़िया)</a></li>
+    </ul>
+</div>
+{% endblock %}

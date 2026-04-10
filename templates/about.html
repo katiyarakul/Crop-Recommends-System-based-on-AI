@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+
+{% block title %}About Us - SMARTKISAAN{% endblock %}
+
+{% block content %}
+<style>
+    .about-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: calc(100vh - 80px); 
+        padding: 40px 20px;
+        background: url("{{ url_for('static', filename='css/about.jpg') }}") no-repeat center center/cover;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .about-wrapper::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1;
+    }
+
+    .about-container {
+        position: relative;
+        z-index: 2;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 30px 40px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        width: 100%;
+        max-width: 800px;
+        opacity: 0;
+        transform: translateY(50px);
+        animation: fadeSlideIn 1.2s ease-out forwards;
+    }
+
+    .about-container h1 {
+        text-align: center;
+        color: #28a745;
+        margin-bottom: 20px;
+        opacity: 0;
+        transform: scale(0.9);
+        animation: popIn 1s ease forwards;
+        animation-delay: 0.6s;
+    }
+
+    .about-container p {
+        line-height: 1.6;
+        margin-bottom: 15px;
+        color: #333;
+        opacity: 0;
+        animation: fadeIn 1s ease forwards;
+    }
+
+    .about-container p:nth-of-type(1) { animation-delay: 1s; }
+    .about-container p:nth-of-type(2) { animation-delay: 1.3s; }
+    .about-container p:nth-of-type(3) { animation-delay: 1.6s; }
+
+    @keyframes fadeSlideIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes popIn {
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+</style>
+
+<div class="about-wrapper">
+    <div class="about-container">
+        <h1>About SMARTKISAAN</h1>
+        <p>
+            SMART is a platform designed to help farmers with smart, personalized recommendations 
+            for better crop management and agricultural solutions. 
+        </p>
+        <p>
+            Our mission is to empower farmers with the right knowledge and tools 
+            to improve crop yield, conserve resources, and adopt sustainable farming practices. 
+        </p>
+        <p>
+            Through data-driven insights and modern agricultural techniques, 
+            SMARTKISAAN provides farmers with solutions tailored to their soil, location, 
+            and irrigation needs.
+        </p>
+    </div>
+</div>
+{% endblock %}
